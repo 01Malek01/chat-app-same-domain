@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useLogin } from "../ApiHooks/useLogin";
+
 
 // Define the validation schema using zod
 const formSchema = z.object({
@@ -13,6 +15,7 @@ const formSchema = z.object({
 type LoginFormValues = z.infer<typeof formSchema>;
 
 export default function Login() {
+  const { login } = useLogin();
   const {
     register,
     handleSubmit,
@@ -22,58 +25,60 @@ export default function Login() {
   });
 
   const onSubmit: SubmitHandler<LoginFormValues> = (data) => {
-    console.log(data);
+    login(data);
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-96 mx-auto">
-      <div className="w-full p-6 rounded-lg shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-15">
-        <h1 className="text-3xl font-semibold text-center text-gray-300">
-          Login
-          <span className="rounded-full bg-sky-400 p-3">ChatWme.com</span>
-        </h1>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <label className="label p-5">
-              <span className="label-text text-base">Email</span>
-            </label>
-            <input
-              className="input input-bordered h-10 w-full"
-              placeholder="Email"
-              {...register("email")}
-            />
-            {errors.email && (
-              <p className="text-red-500">{errors.email.message}</p>
-            )}
-          </div>
-          <div>
-            <label className="label p-5">
-              <span className="label-text text-base">Password</span>
-            </label>
-            <input
-              className="input input-bordered h-10 w-full"
-              placeholder="Password"
-              type="password"
-              {...register("password")}
-            />
-            {errors.password && (
-              <p className="text-red-500">{errors.password.message}</p>
-            )}
-            <span>{"Don't"} have an account?</span>
-            <span>
-              <Link to={"/register"} className="link link-primary">
-                Register
-              </Link>
-            </span>
-            <button
-              className="btn btn-block btn-sm mt-2 hover:bg-blue-400 hover:text-black h-10"
-              type="submit"
-            >
-              Login
-            </button>
-          </div>
-        </form>
+    <>
+      <div className="flex flex-col items-center justify-center max-w-96 mx-auto">
+        <div className="w-full p-6 rounded-lg shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-15">
+          <h1 className="text-3xl font-semibold text-center text-gray-300">
+            Login
+            <span className="rounded-full bg-sky-400 p-3">ChatWme.com</span>
+          </h1>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div>
+              <label className="label p-5">
+                <span className="label-text text-base">Email</span>
+              </label>
+              <input
+                className="input input-bordered h-10 w-full"
+                placeholder="Email"
+                {...register("email")}
+              />
+              {errors.email && (
+                <p className="text-red-500">{errors.email.message}</p>
+              )}
+            </div>
+            <div>
+              <label className="label p-5">
+                <span className="label-text text-base">Password</span>
+              </label>
+              <input
+                className="input input-bordered h-10 w-full"
+                placeholder="Password"
+                type="password"
+                {...register("password")}
+              />
+              {errors.password && (
+                <p className="text-red-500">{errors.password.message}</p>
+              )}
+              <span>{"Don't"} have an account?</span>
+              <span>
+                <Link to={"/register"} className="link link-primary">
+                  Register
+                </Link>
+              </span>
+              <button
+                className="btn btn-block btn-sm mt-2 hover:bg-blue-400 hover:text-black h-10"
+                type="submit"
+              >
+                Login
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

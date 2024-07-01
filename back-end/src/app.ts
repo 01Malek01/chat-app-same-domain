@@ -1,14 +1,18 @@
 import express, { Request, Response } from "express";
-import cors from "cors";
+// import cors from "cors";
 import dotenv from "dotenv";
 import authRouter from "./routes/auth";
 import messageRouter from "./routes/messages";
 import userRouter from "./routes/users";
 import cookieParser from "cookie-parser";
-dotenv.config();
+import http from 'http';
 
-const app = express();
-app.use(cors());
+
+dotenv.config();
+export const app = express();
+
+export const server = http.createServer(app);
+// app.use(cors());
 app.use(express.json()); // for parsing application/json from request body
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

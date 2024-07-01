@@ -9,14 +9,14 @@ export const protectRoute = async (
   next: NextFunction
 ) => {
   try {
-    const token = req.cookies.jwt || req.headers.authorization?.split(" ")[1];
+    const token = req.cookies.jwt;
     if (!token) {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as any;
     const decodedUser = await User.findById(decoded.id);
-    if(!decodedUser) {
+    if (!decodedUser) {
       return res.status(401).json({ message: "Unauthorized" });
     }
 

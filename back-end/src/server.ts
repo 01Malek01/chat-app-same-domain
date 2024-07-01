@@ -1,13 +1,21 @@
 import mongoose from "mongoose";
-import app from "./app";
+import { server } from "./socket/socket";
 const connectDB = async () => {
- const db = await mongoose.connect(process.env.DB!);
- console.log(`MongoDB Connected: ${db.connection.host}`);
+  try {
+    const db = await mongoose.connect(process.env.DB as string);
+    console.log(`MongoDB Connected: ${db.connection.host}`);
+    
+  } catch (err) {
+    console.log('====================================');
+    console.log(err);
+    console.log('====================================');
+  }
+ 
 };
 
 
-
-app.listen(process.env.PORT || 5000, () => {
+//listening on port using socket io server
+server.listen(process.env.PORT || 5000, () => {
   connectDB();
   console.log(`Server is listening on port ${process.env.PORT}` );
 });

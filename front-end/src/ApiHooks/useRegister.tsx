@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { SignUpFormValues } from "../pages/SignUp";
 import toast from "react-hot-toast";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { useAuth } from "../Context/AuthContext";
+import { Navigate } from "react-router-dom";
 
 export const useRegister = () => {
   const [loading, setLoading] = useState(false);
-
+  const { setUser } = useAuth();
   const register = async (data: SignUpFormValues) => {
     if (!data || !data.email || !data.password || !data.confirmPassword) {
       toast.error("Please fill in all fields");
@@ -21,7 +21,7 @@ export const useRegister = () => {
     try {
       setLoading(true);
 
-      const res = await fetch(`${API_URL}/api/auth/signup`, {
+      const res = await fetch(`/api/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -30,6 +30,15 @@ export const useRegister = () => {
       });
       const result = await res.json();
       console.log("API response:", result); // Debug: log the API response
+      localStorage.setItem(
+        "chat-user",
+        JSON.stringify({
+          result,
+        })
+      );
+
+      setUser(result);
+      <Navigate to="/" />
 
       if (!res.ok) {
         // Provide more specific error messages based on the response status
@@ -51,5 +60,5 @@ export const useRegister = () => {
     }
   };
 
-  return { register, isLoading: loading };
+  return { register,  loading };
 };

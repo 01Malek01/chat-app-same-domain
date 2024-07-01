@@ -33,13 +33,17 @@ export default function SignUp() {
   } = useForm<SignUpFormValues>({
     resolver: zodResolver(formSchema),
   });
-  const { register: registerFunction, isLoading } = useRegister();
+  const { register: registerFunction, loading } = useRegister();
   const onSubmit: SubmitHandler<SignUpFormValues> = async (data) => {
     await registerFunction(data);
   };
 
   return (
     <>
+{
+  loading && toast.loading("Loading...") 
+
+}
       <div className="flex flex-col items-center justify-center w-96 mx-auto">
         <div className="w-full p-6 rounded-lg shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-15">
           <h1 className="text-3xl font-semibold text-center text-gray-300">
@@ -151,8 +155,9 @@ export default function SignUp() {
               <button
                 className="btn btn-block btn-sm mt-2 hover:bg-blue-400 hover:text-black h-10"
                 type="submit"
+                disabled={loading}
               >
-                Register
+                {loading ? "Loading..." : "Sign Up"}
               </button>
             </div>
           </form>

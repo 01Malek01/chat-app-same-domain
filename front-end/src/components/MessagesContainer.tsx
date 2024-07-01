@@ -1,9 +1,18 @@
 import { SiImessage } from "react-icons/si";
 import MessageInput from "./MessageInput";
 import Messages from "./Messages";
+import useConversation from "../zustand/useConversations";
+import { useEffect } from "react";
 
 export default function MessagesContainer() {
-  const noChatSelected = true;
+  const {selectedConversation,setSelectedConversation}  = useConversation();
+  useEffect(() => {
+    //clear selected conversation on unmount (cleanup function)
+    return () => {
+      setSelectedConversation(null);
+    }
+  }, [])
+  const noChatSelected = !selectedConversation;
   return (
     <div className="md:min-w-[450px] flex flex-col  ">
       {noChatSelected ? (
@@ -12,7 +21,7 @@ export default function MessagesContainer() {
         <>
           <div className="bg-slate-500 px-4 py-2 mb-2">
             <span className="label-text mr-2">To</span>
-            <span className="text-gray-900 font-bold">john wakanda</span>
+            <span className="text-gray-900 font-bold">{selectedConversation.displayName}</span>
           </div>
           <Messages />
           <MessageInput />
