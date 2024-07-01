@@ -21,9 +21,10 @@ interface User {
 }
 
 // Define the type for the context value
-interface SocketContextType {
-  socket: Socket | null;
-  onlineUsers: string[];
+export interface SocketContextType {
+  socket?: Socket | null;
+  onlineUsers?: string[];
+  
 }
 
 // Define the type for the provider props
@@ -32,7 +33,7 @@ interface SocketProviderProps {
 }
 
 // Create the context with an initial value of null for socket and an empty array for onlineUsers
-export const SocketContext = createContext<SocketContextType | null>(null);
+export const SocketContext = createContext<SocketContextType | null >(null);
 
 // Custom hook to use the Socket context
 export const useSocket = () => useContext(SocketContext);
